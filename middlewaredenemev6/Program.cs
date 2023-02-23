@@ -14,7 +14,6 @@ builder.Services.AddSingleton<ILoggingService, LoggingService>();
 
 var app = builder.Build();
 app.UseMiddleware<ApiMiddleware>();
-app.UseMiddleware<TimeLoggingMiddleware>();
 
 app.UseExceptionHandler("/error");
 
