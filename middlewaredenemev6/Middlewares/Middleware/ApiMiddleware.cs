@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Text;
@@ -24,6 +25,7 @@ public class ApiMiddleware
         _logger.hostIp = Dns.GetHostName();
         _logger.methodName = request.Path.Value;
         _logger.header = FormatHeaders(request.Headers);
+        _logger.requestDate = DateTime.Now.ToString();
         var req = FormatQueries(request.QueryString.ToString());
         string res = "";
 
@@ -53,7 +55,13 @@ public class ApiMiddleware
             using (var memStream = new MemoryStream())
             {
                 context.Response.Body = memStream;
+
+
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 await _next(context);
+                watch.Stop();
+                _logger.time = watch.ElapsedMilliseconds;
                 memStream.Seek(0, SeekOrigin.Begin);
                 string responseBody = new StreamReader(memStream).ReadToEnd();
                 res = responseBody;
@@ -89,7 +97,7 @@ public class ApiMiddleware
         {
             context.Response.Body = originalBody;
         }
-
+        _logger.responseDate = DateTime.Now.ToString();
         if (context.Response.StatusCode == 200)
         {
             _logger.Log();
