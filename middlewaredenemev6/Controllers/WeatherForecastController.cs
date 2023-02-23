@@ -20,11 +20,10 @@ public class WeatherForecastController : ControllerBase
 
 
     [HttpPost()]
-    public IActionResult GetMethodDeneme([FromBody] DTOProcess weather)
+    public IActionResult GetMethod([FromBody] DTOProcess weather)
     {
         try
         {
-            Thread.Sleep(3 * 1000);
             var res = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -36,7 +35,6 @@ public class WeatherForecastController : ControllerBase
         }
         catch (System.Exception ex)
         {
-
             throw ex;
         }
 
@@ -44,7 +42,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpPost()]
-    public IActionResult GetMethodWithGetError([FromBody] DTOProcess weather)
+    public IActionResult GetMethodToGetError([FromBody] DTOProcess weather)
     {
         int s1 = 123;
         int s2 = 0;
