@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\middlewaredenemev6.props" />
+</Project>
