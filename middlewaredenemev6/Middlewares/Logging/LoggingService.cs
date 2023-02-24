@@ -19,8 +19,11 @@ public class LoggingService : ILoggingService
     public void Log()
     {
         LoggingService s = (LoggingService)this.MemberwiseClone();
-        var json = JsonConvert.SerializeObject(s);
-        Console.WriteLine(json);
+        if (s.methodName.IndexOf("api/") != -1)
+        {
+            var json = JsonConvert.SerializeObject(s);
+            Console.WriteLine(json);
+        }
     }
 }
 

@@ -26,6 +26,10 @@ public class ApiMiddleware
         _logger.methodName = request.Path.Value;
         _logger.header = FormatHeaders(request.Headers);
         _logger.requestDate = DateTime.Now.ToString();
+        _logger.exception = "";
+        _logger.response = "";
+        _logger.responseDate = "";
+        _logger.time = 0;
         var req = FormatQueries(request.QueryString.ToString());
         string res = "";
 
@@ -98,10 +102,7 @@ public class ApiMiddleware
             context.Response.Body = originalBody;
         }
         _logger.responseDate = DateTime.Now.ToString();
-        if (context.Response.StatusCode == 200)
-        {
-            _logger.Log();
-        }
+        _logger.Log();
     }
 
     private List<KeyValuePair<string, string>> FormatQueries(string queryString)

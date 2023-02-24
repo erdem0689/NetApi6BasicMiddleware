@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using middlewaredenemev6.Middlewares.Class;
+using middlewaredenemev6.Middlewares.Logging;
 
 namespace middlewaredenemev6.Middlewares.Middleware;
 
@@ -10,6 +11,13 @@ namespace middlewaredenemev6.Middlewares.Middleware;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class ErrorsController : ControllerBase
 {
+    private readonly ILoggingService _logger;
+
+    public ErrorsController(ILoggingService logger)
+    {
+        _logger = logger;
+    }
+
     [Route("error")]
     public ErrorResponse Error()
     {
@@ -17,8 +25,7 @@ public class ErrorsController : ControllerBase
         var exception = context.Error;
 
         // Write error
-        Console.WriteLine("ErrorMiddleware Message: " + context.Error.Message);
-        Console.WriteLine("ErrorMiddleware STrace: " + context.Error.StackTrace);
+        _logger.exception = "Message : " + context.Error.Message + " | StackTrace : " + context.Error.StackTrace;
 
         ErrorResponse mr = new ErrorResponse(context.Error);
         mr.Message = "Error Message";
